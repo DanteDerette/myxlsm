@@ -1022,7 +1022,7 @@ Sub onExitNoProduto()
         Orcamento.desconto_cenario1.Value = 0
     End If
 
-    Orcamento.valorTotal_cenario1.Value = (CDbl(Orcamento.valorUnit�rio_cenario1.Value) * CDbl(Orcamento.quantidade_cenario1.Value)) _
+    Orcamento.valorTotal_cenario1.Value = (CDbl(Orcamento.valorUnitario_cenario1.Value) * CDbl(Orcamento.quantidade_cenario1.Value)) _
     - CDbl(Orcamento.desconto_cenario1.Value)
 End Sub
 
