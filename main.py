@@ -10,7 +10,7 @@ url = "https://jpautomacao-getcard02.getcard.uniplusweb.com/public-api/v1/produt
 
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidW5pcGx1c3dlYiJdLCJzY29wZSI6WyJwZHYiLCJqb2JzLXBkdiIsIm1vYmlsZSIsInNob3AiLCJwdWJsaWMtYXBpIl0sImV4cCI6MTY3NzE3NDg5OSwianRpIjoiYzljM2JjZWMtM2YzZS00MGNhLTljYzctYzAzNjU2OTQ2MmU5IiwidGVuYW50IjpudWxsLCJjbGllbnRfaWQiOiI5ODc2NTQzMjEifQ.uyDBIFJZ3b2-El0RFSybd_jmnkvUcPhUH7xm5awI8o8"
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidW5pcGx1c3dlYiJdLCJzY29wZSI6WyJwZHYiLCJqb2JzLXBkdiIsIm1vYmlsZSIsInNob3AiLCJwdWJsaWMtYXBpIl0sImV4cCI6MTY3NzE5MTYxNywianRpIjoiY2E4NDg5MjUtOGIxZC00ZTg4LWEwZGItODJmNzkyNmY2NzliIiwidGVuYW50IjpudWxsLCJjbGllbnRfaWQiOiI5ODc2NTQzMjEifQ._DTDyCEyhl2rbKHV5KOjRl3WczofN0TmU0h0oBDmNJY"
 }
 
 for index, row in df.iterrows():
