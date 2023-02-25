@@ -1,25 +1,3 @@
-Sub impressaoDeOrcamento_F()
-    impressaoDeOrcamento.Show
-End Sub
-
-Sub esconder()
-    Rows("1:5").Select
-    Range("A5").Activate
-    Selection.EntireRow.Hidden = True
-    Application.DisplayFullScreen = True
-    Range("A8").Select
-End Sub
-Sub mostrar()
-    Rows("1:5").Select
-    Range("A5").Activate
-    Selection.EntireRow.Hidden = False
-    Application.DisplayFullScreen = False
-    Range("A8").Select
-End Sub
-
-Sub abreUserForm1()
-    UserForm1.Show
-End Sub
 Sub venda()
     ThisWorkbook.Save
     Call verificaOndeEstaOCenario
@@ -48,21 +26,22 @@ Sub verificaOndeEstaOCenario()
     
     Set ws = wb.Worksheets("ORÇAMENTO")
     
+    On Error Resume Next
+    Application.DisplayAlerts = False
+    Sheets("cenarios").Delete
+    Application.DisplayAlerts = True
+
     Sheets.Add.Name = "cenarios"
 
     Set wsCenarios = wb.Worksheets("cenarios")
     
     qualLinha = 1
     
-    wsCenarios.Range("A2:XFD99999").Clear
-        
     wsCenarios.Cells(qualLinha, 1).Value = "Cenário"
     wsCenarios.Cells(qualLinha, 2).Value = "Código"
     wsCenarios.Cells(qualLinha, 3).Value = "Quantidade"
     wsCenarios.Cells(qualLinha, 4).Value = "Obs"
     wsCenarios.Cells(qualLinha, 5).Value = "Especificação"
-    
-
     wsCenarios.Cells(qualLinha, 6).Value = "Venda Unitário"
     wsCenarios.Cells(qualLinha, 7).Value = "Venda Total"
     wsCenarios.Cells(qualLinha, 8).Value = "Locação Unitário"
@@ -72,7 +51,7 @@ Sub verificaOndeEstaOCenario()
     contador = 1
     contador2 = 0
     qualLinha = qualLinha + 1
-        
+    
     For i = 9 To lastrow
         If ws.Cells(i, 2).Value = "" And ws.Cells(i, 5).Value <> "" Then
             contador2 = i
@@ -83,17 +62,16 @@ Sub verificaOndeEstaOCenario()
                 
                 With wsCenarios.Cells(qualLinha, 1)
                     .Value = qualCenario
-                    .Interior.Color = RGB(255, 255, 0)
                 End With
                 
                 wsCenarios.Cells(qualLinha, 2).Value = ws.Cells(contador2, 2).Value
                 wsCenarios.Cells(qualLinha, 3).Value = ws.Cells(contador2, 3).Value
                 wsCenarios.Cells(qualLinha, 4).Value = ws.Cells(contador2, 4).Value
                 wsCenarios.Cells(qualLinha, 5).Value = ws.Cells(contador2, 5).Value
-                wsCenarios.Cells(qualLinha, 6).Value = ws.Cells(contador2, 6).Value
-                wsCenarios.Cells(qualLinha, 7).Value = ws.Cells(contador2, 7).Value
-                wsCenarios.Cells(qualLinha, 8).Value = ws.Cells(contador2, 8).Value
-                wsCenarios.Cells(qualLinha, 9).Value = ws.Cells(contador2, 9).Value
+                wsCenarios.Cells(qualLinha, 6).Value = ws.Cells(contador2, 7).Value
+                wsCenarios.Cells(qualLinha, 7).Value = ws.Cells(contador2, 8).Value
+                wsCenarios.Cells(qualLinha, 8).Value = ws.Cells(contador2, 9).Value
+                wsCenarios.Cells(qualLinha, 9).Value = ws.Cells(contador2, 10).Value
 
                 qualLinha = qualLinha + 1
                 contador2 = contador2 + 1
@@ -101,11 +79,6 @@ Sub verificaOndeEstaOCenario()
             contador = contador + 1
         End If
     Next i
-    
-    
-    
-    
-        
 End Sub
 
 Sub geraOrcamento(operacao As String)
@@ -126,6 +99,11 @@ Sub geraOrcamento(operacao As String)
         
     Set wb = ThisWorkbook
       
+    On Error Resume Next
+    Application.DisplayAlerts = False
+    Sheets("OrcamentoGerado").Delete
+    Application.DisplayAlerts = True
+
     Sheets.Add.Name = "OrcamentoGerado"
     
     Set orcamentoGerado = wb.Worksheets("OrcamentoGerado")
@@ -134,8 +112,6 @@ Sub geraOrcamento(operacao As String)
     
     Set inventario = wb.Sheets("INVENTARIO")
     Set orcamento = wb.Worksheets("ORÇAMENTO")
-    
-    orcamentoGerado.Range("A2:XFD99999").Clear
     
     lastRowCenarios = cenarios.Range("A" & cenarios.Rows.Count).End(xlUp).Row
     
@@ -165,9 +141,9 @@ Sub geraOrcamento(operacao As String)
         orcamentoGerado.Cells(i, 6).Value = cenarios.Cells(i, 3).Value
 
         If operacao = "Venda" Then
-            orcamentoGerado.Cells(i, 7).Value = cenarios.Cells(i, 7).Value
+            orcamentoGerado.Cells(i, 7).Value = cenarios.Cells(i, 6).Value
         ElseIf operacao = "Locação" Then
-            orcamentoGerado.Cells(i, 7).Value = cenarios.Cells(i, 9).Value
+            orcamentoGerado.Cells(i, 7).Value = cenarios.Cells(i, 8).Value
         End If
         
         orcamentoGerado.Cells(i, 8).Formula = "=G" & i & "*F" & i
@@ -234,7 +210,7 @@ Sub GetNonRepetitiveValues(operacao)
     quaisCenarios.Range("A12").Value = " "
     
     If operacao = "Venda" Then
-        quaisCenarios.Range("A13").Value = "Pela presente, apresentamos a proposta para Venda de decoração de Páscoa conforme descrição abaixo."
+        quaisCenarios.Range("A13").Value = "Pela presente, apresentamos a proposta para VENDA de decoração de Páscoa conforme descrição abaixo."
     ElseIf operacao = "Locação" Then
         quaisCenarios.Range("A13").Value = "Pela presente, apresentamos a proposta para LOCAÇÃO de decoração de Páscoa conforme descrição abaixo."
     End If
@@ -409,7 +385,7 @@ Sub GetNonRepetitiveValues(operacao)
     Range("H" & lastRowQuaisCenarios + 2).Formula = stringQueGeraAFormulaDeSomarTudo
     
     Range("A" & lastRowQuaisCenarios + 2).Value = " "
-    
+
     With quaisCenarios.Range("G" & (lastRowQuaisCenarios + 2))
         .HorizontalAlignment = xlRight
         .Interior.Color = RGB(255, 255, 0)
@@ -440,6 +416,9 @@ Sub GetNonRepetitiveValues(operacao)
     
     Range("A" & lastRowQuaisCenarios + 5).Value = "Validade da Proposta: 30 dias"
     Range("A" & lastRowQuaisCenarios + 5).Font.Bold = True
+
+    Range("A" & lastRowQuaisCenarios + 6).Value = orcamentoInicial.Range("B1").Value
+    Range("A" & lastRowQuaisCenarios + 6).Font.Bold = True
      
     Range("A" & lastRowQuaisCenarios + 7).Value = "Data de entrega: a combinar"
     Range("A" & lastRowQuaisCenarios + 7).Font.Bold = True
@@ -466,9 +445,8 @@ Sub GetNonRepetitiveValues(operacao)
     Range("A1").Select
     
     Application.DisplayAlerts = False
-    'resultSheet.Delete
-    ThisWorkbook.Sheets("orcamentoGerado").Delete
-    ThisWorkbook.Sheets("cenarios").Delete
+    ' ThisWorkbook.Sheets("orcamentoGerado").Delete
+    ' ThisWorkbook.Sheets("cenarios").Delete
     Application.DisplayAlerts = True
     
     
