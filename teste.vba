@@ -2,14 +2,14 @@ Sub venda()
     ThisWorkbook.Save
     Call verificaOndeEstaOCenario
     Call geraOrcamento("Venda")
-    Call GetNonRepetitiveValues("Venda")
+    Call geraOResultadoFinal("Venda")
 End Sub
 
 Sub locacao()
     ThisWorkbook.Save
     Call verificaOndeEstaOCenario
     Call geraOrcamento("Locação")
-    Call GetNonRepetitiveValues("Locação")
+    Call geraOResultadoFinal("Locação")
 End Sub
 
 Sub verificaOndeEstaOCenario()
@@ -155,11 +155,12 @@ Sub geraOrcamento(operacao As String)
 
 End Sub
 
-Sub GetNonRepetitiveValues(operacao)
+Sub geraOResultadoFinal(operacao)
     Dim wb As Workbook
     Dim quaisCenarios As Worksheet
     Dim cenarios As Worksheet
     Dim orcamentoInicial As Worksheet
+    dim bancoDeDadosClientes as Worksheet
     
     Dim lastRowCenarios As Integer
     Dim lastRowQuaisCenarios As Integer
@@ -169,6 +170,10 @@ Sub GetNonRepetitiveValues(operacao)
     Dim qualCenarioEstouMexer As String
     Dim descobreOComecoDosProdutos As Integer
     Dim stringQueGeraAFormulaDeSomarTudo As String
+    dim oqueProcurarDoPROCV as String
+
+    Dim searchRange As Range
+    Dim foundCell As Range
     
     stringQueGeraAFormulaDeSomarTudo = ""
      
@@ -177,6 +182,13 @@ Sub GetNonRepetitiveValues(operacao)
     Set quaisCenarios = wb.Worksheets("IMPRESSÃO DE ORÇAMENTO 2")
     Set cenarios = wb.Worksheets("orcamentoGerado")
     Set orcamentoInicial = ThisWorkbook.Worksheets("ORÇAMENTO")
+    set bancoDeDadosClientes = ThisWorkbook.Worksheets("BANCO DE DADOS DE CLIENTES")
+
+    oqueProcurarDoPROCV = orcamentoInicial.range("F1").value
+    
+    Set searchRange = bancoDeDadosClientes.Range("B1:B" & bancoDeDadosClientes.Range("B" & Rows.Count).End(xlUp).Row)
+    Set foundCell = searchRange.Find(oqueProcurarDoPROCV, LookIn:=xlValues, LookAt:=xlPart)
+
     
     quaisCenarios.Range("A1:XFD99999").Clear
     
@@ -203,10 +215,19 @@ Sub GetNonRepetitiveValues(operacao)
     quaisCenarios.Range("A5").Value = " "
     quaisCenarios.Range("A6").Value = " "
     quaisCenarios.Range("A7").Value = " "
+
     quaisCenarios.Range("A8").Value = "Cliente:"
+    quaisCenarios.Range("B8").Value = orcamentoInicial.range("B1").value
+
     quaisCenarios.Range("A9").Value = "Cidade:"
+    quaisCenarios.Range("B9").Value = bancoDeDadosClientes.Range("L" & foundCell.Row).value
+
     quaisCenarios.Range("A10").Value = "Telefone:"
+    quaisCenarios.Range("B10").Value = bancoDeDadosClientes.Range("P" & foundCell.Row).value
+    
     quaisCenarios.Range("A11").Value = "Contato:"
+    quaisCenarios.Range("A11").Value = bancoDeDadosClientes.Range("E" & foundCell.Row).value
+
     quaisCenarios.Range("A12").Value = " "
     
     If operacao = "Venda" Then
@@ -445,8 +466,8 @@ Sub GetNonRepetitiveValues(operacao)
     Range("A1").Select
     
     Application.DisplayAlerts = False
-    ' ThisWorkbook.Sheets("orcamentoGerado").Delete
-    ' ThisWorkbook.Sheets("cenarios").Delete
+    ThisWorkbook.Sheets("orcamentoGerado").Delete
+    ThisWorkbook.Sheets("cenarios").Delete
     Application.DisplayAlerts = True
     
     
