@@ -26,14 +26,15 @@ Sub venda()
     Call geraOrcamento("Venda")
     Call GetNonRepetitiveValues("Venda")
 End Sub
+
 Sub locacao()
     ThisWorkbook.Save
     Call verificaOndeEstaOCenario
     Call geraOrcamento("Locação")
     Call GetNonRepetitiveValues("Locação")
 End Sub
-Sub verificaOndeEstaOCenario()
 
+Sub verificaOndeEstaOCenario()
     Dim wb As Workbook
     Dim ws As Worksheet
     Dim wsCenarios As Worksheet
