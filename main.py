@@ -10,7 +10,7 @@ url = "https://jpautomacao-getcard02.getcard.uniplusweb.com/public-api/v1/produt
 
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidW5pcGx1c3dlYiJdLCJzY29wZSI6WyJwZHYiLCJqb2JzLXBkdiIsIm1vYmlsZSIsInNob3AiLCJwdWJsaWMtYXBpIl0sImV4cCI6MTY3NzE5NDgzNSwianRpIjoiODJlODE5ZTAtOTgwYS00NGJhLWJjMjEtZWM4NWZlZjJhMzk3IiwidGVuYW50IjpudWxsLCJjbGllbnRfaWQiOiI5ODc2NTQzMjEifQ.xQIzVSB9LVovbqSxeOPFuiehzL8htq5zQtlSNndaaPo"
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidW5pcGx1c3dlYiJdLCJzY29wZSI6WyJwZHYiLCJqb2JzLXBkdiIsIm1vYmlsZSIsInNob3AiLCJwdWJsaWMtYXBpIl0sImV4cCI6MTY3NzM2MjY1MSwianRpIjoiOGZlZjA5ZDktYzRiYi00MjVjLTg3ODktNWU3MjRhZmEzYTI1IiwidGVuYW50IjpudWxsLCJjbGllbnRfaWQiOiIwMjc0MjM2MTAwMDEzOSJ9.JveL_e3mI93B7G_4yNXFe78DYdU2MUlrRkLuNn1TTvA"
 }
 
 for index, row in df.iterrows():
@@ -38,8 +38,6 @@ for index, row in df.iterrows():
         }}
 
         response = requests.request("POST", url, json=payload, headers=headers)
-
-
 
         if response.status_code != 200:
             print("erro neste lancamento")
