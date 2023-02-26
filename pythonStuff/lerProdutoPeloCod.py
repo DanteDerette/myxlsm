@@ -14,6 +14,7 @@ headers = {
 
 payload = {"produto": {"nome": "PFG132"}}
 response = requests.request("GET", url, json=payload, headers=headers)
+
 print(json.loads(response.text)[0]['codigo'])
 
 
