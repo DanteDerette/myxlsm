@@ -2,7 +2,7 @@ import pandas as pd
 import decimal
 import requests
 import math
-
+from geraToken import myNewToken
 
 df = pd.read_excel("C:\GitHub\myxlsm\inventario_externo.xlsx")
 url = "https://jpautomacao-getcard02.getcard.uniplusweb.com/public-api/v1/produtos"
@@ -10,53 +10,27 @@ url = "https://jpautomacao-getcard02.getcard.uniplusweb.com/public-api/v1/produt
 
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsidW5pcGx1c3dlYiJdLCJzY29wZSI6WyJwZHYiLCJqb2JzLXBkdiIsIm1vYmlsZSIsInNob3AiLCJwdWJsaWMtYXBpIl0sImV4cCI6MTY3NzE5MTYxNywianRpIjoiY2E4NDg5MjUtOGIxZC00ZTg4LWEwZGItODJmNzkyNmY2NzliIiwidGVuYW50IjpudWxsLCJjbGllbnRfaWQiOiI5ODc2NTQzMjEifQ._DTDyCEyhl2rbKHV5KOjRl3WczofN0TmU0h0oBDmNJY"
+    "Authorization": "Bearer " + myNewToken() 
 }
 
 for index, row in df.iterrows():
     try:
-        decimal_value = decimal.Decimal(str(row['VENDA']))
-        rounded_value = round(decimal_value, 3)
-        precoDeVenda = float(rounded_value)
-
-        decimal_value = decimal.Decimal(str(row['LOCAÇÃO']))
-        rounded_value = round(decimal_value, 3)
-        precoDeLocacao = float(rounded_value)
-
-        if precoDeVenda == 0 or precoDeVenda == "" or math.isnan(precoDeVenda):
-            precoDeVenda = 0.01
-
-        if precoDeLocacao == 0 or precoDeLocacao == "" or math.isnan(precoDeLocacao):
-            precoDeLocacao = 0.01
         
-        url = "https://jpautomacao-getcard02.getcard.uniplusweb.com/public-api/v1/produtos/" + str(row['ID'])
-
-        payload = {"produto": {
-            "codigo": str(row['ID']),
-            "nome": row['CÓDIGO'],
-            "preco": precoDeVenda,
-            "precoPauta1": precoDeLocacao,
-            "unidadeMedida": "UN"
-        }}
-
-        response = requests.request("DELETE", url, json=payload, headers=headers)
+        url = "https://jpautomacao-getcard02.getcard.uniplusweb.com/public-api/v1/produtos/" + str(row['id'])
+        
+        response = requests.request("DELETE", url, headers=headers)
 
         if response.status_code != 200:
             print("erro neste lancamento")
             print(response.text)
-            print(row['ID'])
-            print(row['CÓDIGO'])
-            print(precoDeVenda)
-            print(precoDeLocacao)
+            print((row['id']))
             break
 
     except Exception as e:
         print(e)
+        print((row['id']))
         print("erro neste lancamento")
-        print(row['ID'])
-        print(row['CÓDIGO'])
-        print(precoDeVenda)
-        print(precoDeLocacao)
+
         
         break    
 
